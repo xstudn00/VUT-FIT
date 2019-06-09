@@ -1,5 +1,5 @@
 # Dokumentace zdrojových kódů
-Hodnocení projektu: 12/12
+Hodnocení projektu: 2,9/4
 ## Zadání
 - Vytvořte dokumentaci zdrojových kódů ke 3. projektu
 - Dokumentaci vytvořte pomocí anotovaných komentářů pro dokumentační nástroj [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
