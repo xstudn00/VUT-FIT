@@ -1,2 +1,3 @@
 # ISJ
-Skriptovací jazyky
+Skriptovací jazyky<br/>
+Řešení projektu slouží pouze k inspiraci.
