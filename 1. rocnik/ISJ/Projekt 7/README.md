@@ -39,9 +39,9 @@ with Log('mylog.txt') as logfile:
     logfile.logging('Test2')
     a = 1/0
     logfile.logging('Test3')
-    ```
+```
 
-bylo v souboru mylog.txt:
+bylo v souboru `mylog.txt`:
 ```
 Begin
 Test1
