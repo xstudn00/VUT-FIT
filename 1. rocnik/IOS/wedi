@@ -1,0 +1,342 @@
+#!/bin/sh
+POSIXLY_CORRECT=yes
+
+################################################################################
+####                      Projekt č. 1 IOS                                  ####
+####                     Letní semestr 2018                                 ####
+####                  Ondřej Studnička (xstudn00)                           ####
+################################################################################
+
+#nasledujici radky kodu kontroluji zda je mozne pouzit realpath, pokud neni#
+#dispozici tak se skript  ukonci#
+if hash realpath 2>/dev/null; then 
+    true
+else
+    echo "ERROR! Realpath nelze pouzit">&2
+    exit 1
+fi
+
+#kontrola zda je nastavena promenna WEDI_RC, pokud ne, tak se skript ukonci#
+if [ -z $WEDI_RC ]; then
+    echo "ERROR! Nebyla zadana cesta k WEDI_RC.">&2
+    exit 1
+fi
+
+#Pokud je zadana WEDI_RC s neexistujici cestou tak vytvorim soubor i slozku #
+if [ ! -f $WEDI_RC ]; then
+    mkdir -p "$(dirname "$WEDI_RC")" && touch "$WEDI_RC"
+fi
+
+#definice promennych#
+adresa=$(realpath .)
+parametr="$1"
+OS=$(uname)
+
+#nastaveni editoru EDITOR -> VISUAL -> vi#
+editor_setting(){
+if [ -z "$EDITOR" ]; then 
+   if [ -z "$VISUAL" ]; then
+     vi "$parametr";
+   else
+    $VISUAL "$parametr";
+   fi
+  else  
+   $EDITOR "$parametr";
+  fi
+}
+
+#funkce pro zapis do WEDI_RC#
+new_line_wedi_rc(){
+if [ -f "$parametr" ];then 
+   echo "$(realpath "${parametr}");$(date +%Y-%m-%d)" >> $WEDI_RC
+  fi
+}
+
+#editace zvoleneho souboru#
+file_edit(){
+  editor_setting
+  new_line_wedi_rc  
+}
+
+#vycisteni promenne $WEDI_RC#
+#odstranim zaznamy ktere uz neexistuji#
+zvysovani=1
+while read line; 
+do 
+    line=$(echo "$line" | awk -F";" '{print $1}')
+    if [ "$OS" = "FreeBSD" ]; then
+            if [ ! -f "$line" ];then
+                gsed -i "${zvysovani}d" "$WEDI_RC"
+            fi
+        else
+           if [ ! -f "$line" ];then
+                sed -i "${zvysovani}d" "$WEDI_RC"
+           fi
+    fi   
+zvysovani=$(expr $zvysovani + 1)
+done < $WEDI_RC
+
+
+
+
+#pripad kdy je skript wedi spusten bez argumentu (./wedi)#
+#kontrola ze neni zadan argument#
+#do promene parametr ukladam vsechny odkazy z WEDI_RC na aktualni slozku#
+#nasledne obracim poradi ziskanych souboru -> na prvnim miste posledni otevreny soubor z adresare#
+#nasledne si pomoci head necham akorat posledni radek#
+#nakonec si ze ziskanehou vyrazu vyriznu pouze adresu souboru, tento soubor pak necham otevrit#
+#pokud jsem nenasel zadnou shodu nebo soubor na ktery je odkazano jiz neexistuje tak vyhodim chybu#
+if [ "$#" = "0" ]; then
+  parametr="$(grep "$adresa/[^/]*$" "$WEDI_RC" | sed -n '1!G;h;$p' | head -n 1 | awk -F";" '{print $1}')"  
+  if  [ -z "$parametr" ] || [ ! -f "$parametr" ]; then 
+    echo "ERROR! V teto slozce jeste pravdepodobne editovan zadny soubor" >&2
+    exit 1
+  else
+   file_edit
+  fi
+exit 0
+fi
+
+
+#vypis soubor editovanych po danem datu#
+#testuju pocet argumentu#
+#ukladam adresu#
+#kontroluju jestli bylo datum zadano ve spravnem formatu#
+#odstranuju pomlcky z data#
+#hledam vsechny soubory z adresy ktere byly editovane#
+#porovnavam zadane datum s daty s WEDI_RC, pokud je mensi nebo rovno tak vypisu soubor#
+
+
+if [ "$1" = "-a" ]; then
+    if [ "$#" = "1" ]; then
+        echo "ERROR! Spatny pocet argumentu" >&2
+        exit 1
+    elif [ "$#" = "2" ]; then
+        adresa=$(realpath .)
+        if [ "$OS" = "FreeBSD" ]; then
+            check=$(gdate -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        else
+            check=$(date -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        fi
+        if [ "$?" = "0" ]; then
+        datum=`echo "$2" | awk -F"-" '{print $1 $2 $3}'`
+        nalezeno="$(grep "$adresa/[^/]*$" "$WEDI_RC" | sort)"        
+        nepravdepodobne="qwertzuioplkjhgfdsayxcvbnm"
+        for zaznam in $nalezeno ; do
+            zapsano=`echo $zaznam | awk -F";" '{print $2}' | awk -F"-" '{print $1 $2 $3}'`
+            if [ $zapsano -ge $datum ];then
+              tisk=`echo $zaznam |awk -F";" '{print $1}'`
+                    if [ "$tisk" != "$nepravdepodobne" ];then
+                        echo "$tisk"
+                        nepravdepodobne="$tisk"
+                    fi
+            fi
+        done
+        
+        else
+           echo "ERROR! Spatny datum" >&2
+        fi
+    
+    elif [ "$#" = "3" ]; then
+         adresa=$(realpath $3)
+          if [ "$OS" = "FreeBSD" ]; then
+            check=$(gdate -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        else
+            check=$(date -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        fi
+        if [ "$?" = "0" ]; then
+        datum=`echo "$2" | awk -F"-" '{print $1 $2 $3}'`
+        nalezeno="$(grep "$adresa/[^/]*$" "$WEDI_RC" | sort)"        
+        nepravdepodobne="qwertzuioplkjhgfdsayxcvbnm"
+        for zaznam in $nalezeno ; do
+            zapsano=`echo $zaznam | awk -F";" '{print $2}' | awk -F"-" '{print $1 $2 $3}'`
+            if [ $zapsano -ge $datum ];then
+              tisk=`echo $zaznam |awk -F";" '{print $1}'`
+                    if [ "$tisk" != "$nepravdepodobne" ];then
+                        echo "$tisk"
+                        nepravdepodobne="$tisk"
+                    fi
+            fi
+        done
+        
+        else
+           echo "ERROR! Spatny datum" >&2
+        fi
+    else
+        echo "ERROR! Spatny argument" >&2
+    fi
+exit 0
+fi
+
+
+#vypis soubor editovanych pred danem datu#
+#testuju pocet argumentu#
+#ukladam adresu#
+#kontroluju jestli bylo datum zadano ve spravnem formatu#
+#odstranuju pomlcky z data#
+#hledam vsechny soubory z adresy ktere byly editovane#
+#porovnavam zadane datum s daty s WEDI_RC, pokud je mensi nebo rovno tak vypisu soubor#
+
+if [ "$1" = "-b" ]; then
+    if [ "$#" = "1" ]; then
+        echo "ERROR! Spatny pocet argumentu" >&2
+        exit 1
+    elif [ "$#" = "2" ]; then
+        adresa=$(realpath .)
+        if [ "$OS" = "FreeBSD" ]; then
+            check=$(gdate -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        else
+            check=$(date -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        fi
+
+        if [ "$?" = "0" ]; then
+        datum=`echo "$2" | awk -F"-" '{print $1 $2 $3}'`
+        nalezeno="$(grep "$adresa/[^/]*$" "$WEDI_RC" | sort)"        
+        nepravdepodobne="qwertzuioplkjhgfdsayxcvbnm"
+        for zaznam in $nalezeno ; do
+            zapsano=`echo $zaznam | awk -F";" '{print $2}' | awk -F"-" '{print $1 $2 $3}'`
+            if [ $zapsano -lt $datum ];then
+              tisk=`echo $zaznam |awk -F";" '{print $1}'`
+                    if [ "$tisk" != "$nepravdepodobne" ];then
+                        echo "$tisk"
+                        nepravdepodobne="$tisk"
+                    fi
+            fi
+        done
+        
+        else
+           echo "ERROR! Spatny datum" >&2
+        fi
+    
+    elif [ "$#" = "3" ]; then
+         adresa=$(realpath $3)
+        if [ "$OS" = "FreeBSD" ]; then
+            check=$(gdate -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        else
+            check=$(date -d "$2" +"%Y-%m-%d" >/dev/null 2>&1)
+        fi
+        if [ "$?" = "0" ]; then
+        datum=`echo "$2" | awk -F"-" '{print $1 $2 $3}'`
+        nalezeno="$(grep "$adresa/[^/]*$" "$WEDI_RC" | sort)"        
+        nepravdepodobne="qwertzuioplkjhgfdsayxcvbnm"
+        for zaznam in $nalezeno ; do
+            zapsano=`echo $zaznam | awk -F";" '{print $2}' | awk -F"-" '{print $1 $2 $3}'`
+            if [ $zapsano -lt $datum ];then
+              tisk=`echo $zaznam |awk -F";" '{print $1}'`
+                    if [ "$tisk" != "$nepravdepodobne" ];then
+                        echo "$tisk"
+                        nepravdepodobne="$tisk"
+                    fi
+            fi
+        done
+        
+        else
+           echo "ERROR! Spatny datum" >&2
+        fi
+    else
+        echo "ERROR! Spatny argument" >&2
+    fi
+exit 0
+fi
+
+#pokud je zadano -l tak vypisu vsechny editovane soubory v adresari#
+#na zaklade zadane cesty ziskam vsechny soubory z daneho adresare a odstruhnu od nich datum editace#
+#nasledne seradim a vypisu pouze jedenkrat#
+if [ "$1" = "-l" ]; then
+    if [ "$#" = "1" ]; then        
+    adresa=$(realpath .)
+    parametr="$(grep "$adresa/[^/]*$" "$WEDI_RC"| awk -F";" '{print $1}')"
+    if  [ -z "$parametr" ]; then 
+     echo "ERROR! V teto slozce jeste pravdepodobne editovan zadny soubor" >&2
+     exit 1
+    else 
+     grep "$adresa/[^/]*$" "$WEDI_RC"| awk -F";" '{print $1}' | sort | uniq
+    fi
+
+
+    elif [ "$#" = "2" ]; then
+            if [ -d $2 ]; then
+          adresa=$(realpath $2)
+          parametr=`grep "$adresa/[^/]*$" "$WEDI_RC"| awk -F";" '{print $1}'`
+            if  [ -z "$parametr" ]; then 
+             echo "ERROR! V teto slozce jeste pravdepodobne editovan zadny soubor" >&2
+             exit 1
+            else 
+             grep "$adresa/[^/]*$" "$WEDI_RC"| awk -F";" '{print $1}' | sort | uniq          
+          fi
+        else
+          echo "ERROR! Musi byt zadany adresar" >&2
+          exit 1
+        fi
+    else
+        echo "ERROR! Spatne argumenty" >&2
+        exit 1
+    fi
+exit 0
+fi
+
+#zadan argument -m -> hledam nejcasteji editovany#
+#nactu cestu -> vyfiltruju nazvy ceste -> seradim -> spocitam -> obratim poradi (nejcastejsi je ted nahore) -> odstrihnu vse ostatatni -> vypisu adresu#
+
+#zadan argument -m -> hledam nejcasteji editovany#
+#nactu cestu -> vyfiltruju nazvy ceste -> seradim -> spocitam -> obratim poradi (nejcastejsi je ted nahore) -> odstrihnu vse ostatatni -> vypisu adresu#
+
+if [ "$1" = "-m" ]; then
+    if [ "$#" = "1" ];then
+        adresa=$(realpath .)
+        parametr="$(grep "$adresa/[^/]*$" "$WEDI_RC"| awk -F";" '{print $1}'| sort | uniq -c| sort -r | head -n 1 | awk '{print $2}')"
+       
+        if  [ -z "$parametr" ] || [ ! -f "$parametr" ]; then 
+     echo "ERROR! V teto slozce jeste pravdepodobne editovan zadny soubor" >&2
+     exit 1
+    else 
+     file_edit
+    fi
+    
+    elif [ "$#" = "2" ];then
+        if [ -d $2 ]; then
+      adresa=$(realpath $2)
+     parametr="$(grep "$adresa/[^/]*$" "$WEDI_RC"| awk -F";" '{print $1}'| sort | uniq -c| sort -r | head -n 1 | awk '{print $2}')"
+     
+    fi
+    if  [ -z "$parametr" ] || [ ! -f "$parametr" ]; then 
+     echo "ERROR! V teto slozce jeste pravdepodobne editovan zadny soubor" >&2
+     exit 1
+    else 
+     file_edit
+    fi
+    else
+        echo "ERROR spatne argumenty" >&2
+        exit 1
+    fi
+exit 0
+fi
+
+
+#pripad kdz je skript wedi spusten s jednim argumentem (adresar/soubor)#
+#pokud se jedna o slozku tak si ulozim jeji adresu s kterou dale pracuji#
+#do promene parametr ukladam vsechny odkazy z WEDI_RC na aktualni slozku#
+#nasledne obracim poradi ziskanych souboru -> na prvnim miste posledni otevreny soubor z adresare#
+#nasledne si pomoci head necham akorat posledni radek#
+#nakonec si ze ziskanehou vyrazu vyriznu pouze adresu souboru, tento soubor pak necham otevrit#
+#pokud jsem nenasel zadnou shodu nebo soubor na ktery je odkazano jiz neexistuje tak vyhodim chybu#
+#pokud je zadany argument soubor tak jej edituji#
+#pokud zadany soubor neni ani slozka ani adresar tak chyba#
+if [ "$#" = "1" ] && [ -d "$parametr" ]; then
+  adresa=$(realpath $1)
+  parametr="$(grep "$adresa/[^/]*$" "$WEDI_RC" | sed -n '1!G;h;$p' | head -n 1 | awk -F";" '{print $1}')"  
+  if  [ -z "$parametr" ] || [ ! -f "$parametr" ]; then 
+     echo "ERROR! V teto slozce jeste pravdepodobne editovan zadny soubor" >&2
+     exit 1
+    else 
+     file_edit
+  fi
+elif [ "$#" = "1" ] && [ -f "$parametr" ]; then
+    file_edit
+else
+    echo "ERROR! Nexistujici soubor nebo slozka" >&2
+    exit 1
+
+fi
+
+
