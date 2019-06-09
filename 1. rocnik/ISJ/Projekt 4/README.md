@@ -39,8 +39,10 @@ assert all_subsets_excl_empty('a', 'b', 'c', exclude_empty = True) == [['a'], ['
 assert all_subsets_excl_empty('a', 'b', 'c', exclude_empty = False) == [[], ['a'], ['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']]
 ```
 
-Jako první řádek skriptu uveďte tzv. shebang (viz https://en.wikipedia.org/wiki/Shebang_%28Unix%29), který umožní spuštění skriptu na fakultních serverech, takže např.:
+Jako první řádek skriptu uveďte tzv. shebang, který umožní spuštění skriptu na fakultních serverech, takže např.:
+```
 #!/usr/bin/env python3
+```
 Nezapomeňte na dokumentační řetězce všech funkcí.
 Dále každou logickou část kódu jednotlivých funkcí okomentujte, např.
 checking whether the item can be a member of a set
