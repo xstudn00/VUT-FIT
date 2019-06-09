@@ -2,7 +2,6 @@
 Hodnocení projektu: 5/5
 ## Zadání
 
-Popis:
 Do souboru, nazvaného podle konvence isj_proj04_xnovak00.py, napište definice následujících funkcí:
 ```
 can_be_a_set_member_or_frozenset(item)
