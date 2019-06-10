@@ -1,4 +1,8 @@
-# Seminář C
+# ICS
+Seminář C#
 
-Aplikace pro týmovou komunikaci 
-**Authors** - Václav Trampeška, Martin Macháček, Ondřej Studnička, David Valecký, David Gajdoš
+Řešení projektu slouží pouze k inspiraci.<br/>
+
+Aplikace pro týmovou komunikaci <br/>
+**Autoři** - Václav Trampeška, Martin Macháček, Ondřej Studnička, David Valecký, David Gajdoš<br/>
+Hodnocení projektu: 90/100
