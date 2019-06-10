@@ -416,8 +416,8 @@ echo '
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="description" content="Free Web tutorials">
-  	<meta name="keywords" content="HTML,CSS">
+	<meta name="description" content="IPP">
+  	<meta name="keywords" content="IPP">
     <meta name="author" content="Ondřej Studnička">
 	<title>IPP report</title>
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin-ext" rel="stylesheet">
