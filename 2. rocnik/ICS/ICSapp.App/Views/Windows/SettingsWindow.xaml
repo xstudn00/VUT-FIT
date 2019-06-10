@@ -1,0 +1,371 @@
+﻿<Window
+    x:Class="ICSapp.App.Views.Windows.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ff="clr-namespace:ICSapp.App.Helpers"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="User´s settings"
+    MinWidth="900"
+    MinHeight="600"
+    d:DesignHeight="600"
+    d:DesignWidth="900"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=UserViewModel}"
+    mc:Ignorable="d">
+    <Window.Icon>../../Resources/favicon.ico</Window.Icon>
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#60a3bc" />
+            <Setter Property="TextElement.Foreground" Value="#E5E5E5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter
+                                Margin="0,0,0,4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="Background" Value="#0a3d62" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid TextElement.FontSize="20">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0.4,0.6">
+                <GradientStop Offset="1" Color="#333333" />
+                <GradientStop Offset="1" Color="#444444" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid
+            Width="320"
+            Margin="0,40,0,0"
+            VerticalAlignment="Center"
+            TextElement.FontSize="20">
+            <Grid
+                Width="320"
+                Height="100"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Height="50"
+                    Margin="0,-35,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontFamily="Microsoft JhengHei"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Foreground="#E5E5E5"
+                    Text="Update information" />
+                <Line
+                    VerticalAlignment="Top"
+                    Stroke="#E5E5E5"
+                    StrokeThickness="1"
+                    X1="72"
+                    X2="249"
+                    Y1="15"
+                    Y2="15" />
+
+                <TextBlock
+                    Margin="0,25,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="DemiBold"
+                    Foreground="#b71540"
+                    Text="{Binding EditText}" />
+            </Grid>
+            <Grid
+                Width="320"
+                Height="70"
+                Margin="0,60,0,0"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Margin="10,-5,0,0"
+                    FontSize="13"
+                    Foreground="white">
+                    <Span>
+                        <Run Text="Firstname" />
+                    </Span>
+                </TextBlock>
+                <Border
+                    Width="320"
+                    Height="38"
+                    Background="#E5E5E5"
+                    CornerRadius="20">
+
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="270"
+                            Opacity=".4"
+                            ShadowDepth="2"
+                            Color="#555555" />
+                    </Border.Effect>
+
+                    <TextBox
+                        x:Name="InputName"
+                        Width="320"
+                        Height="38"
+                        Padding="45,5,20,0"
+                        HorizontalAlignment="center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Text="{Binding EditName}" />
+                </Border>
+                <materialDesign:PackIcon
+                    Width="25"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="left"
+                    VerticalAlignment="Center"
+                    Foreground="#333333"
+                    Kind="User" />
+            </Grid>
+
+            <Grid
+                Width="320"
+                Height="70"
+                Margin="0,140,0,0"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Margin="10,-5,0,0"
+                    FontSize="13"
+                    Foreground="white">
+                    <Span>
+                        <Run Text="Surname" />
+                    </Span>
+                </TextBlock>
+                <Border
+                    Width="320"
+                    Height="38"
+                    Background="#E5E5E5"
+                    CornerRadius="20">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="270"
+                            Opacity=".4"
+                            ShadowDepth="2"
+                            Color="#555555" />
+                    </Border.Effect>
+                    <TextBox
+                        x:Name="InputSurname"
+                        Width="320"
+                        Height="38"
+                        Padding="45,5,20,0"
+                        HorizontalAlignment="center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Text="{Binding EditSurname}" />
+                </Border>
+                <materialDesign:PackIcon
+                    Width="25"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="left"
+                    VerticalAlignment="Center"
+                    Foreground="#333333"
+                    Kind="User" />
+                <!--  Text="{Binding User.Surname}"  -->
+            </Grid>
+            <Grid
+                Width="320"
+                Height="70"
+                Margin="0,220,0,0"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Margin="10,-5,0,0"
+                    FontSize="13"
+                    Foreground="white">
+                    <Span>
+                        <Run Text="Description" />
+                    </Span>
+                </TextBlock>
+                <Border
+                    Width="320"
+                    Height="38"
+                    Background="#E5E5E5"
+                    CornerRadius="20">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="270"
+                            Opacity=".4"
+                            ShadowDepth="2"
+                            Color="#555555" />
+                    </Border.Effect>
+
+                    <TextBox
+                        x:Name="InputEmail"
+                        Width="320"
+                        Height="38"
+                        Padding="45,5,20,0"
+                        HorizontalAlignment="center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        MaxLength="80"
+                        Text="{Binding EditDescription}" />
+
+                </Border>
+                <materialDesign:PackIcon
+                    Width="25"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="left"
+                    VerticalAlignment="Center"
+                    Foreground="#333333"
+                    Kind="User" />
+
+            </Grid>
+
+
+
+
+            <Grid
+                Width="320"
+                Height="70"
+                Margin="0,300,0,0"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Margin="10,-5,0,0"
+                    FontSize="13"
+                    Foreground="white">
+                    <Span>
+                        <Run Text="Image" />
+                    </Span>
+                </TextBlock>
+                <Border
+                    Width="320"
+                    Height="38"
+                    Background="#E5E5E5"
+                    CornerRadius="20">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="270"
+                            Opacity=".4"
+                            ShadowDepth="2"
+                            Color="#555555" />
+                    </Border.Effect>
+
+                    <TextBox
+                        x:Name="InputImage"
+                        Width="320"
+                        Height="38"
+                        Padding="45,5,20,0"
+                        HorizontalAlignment="center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Foreground="Gray"
+                        IsReadOnly="True"
+                        Text="Profile picture" />
+
+
+                </Border>
+
+                <Button
+                    Name="btnOpenFile"
+                    Width="80"
+                    Height="38"
+                    HorizontalAlignment="Right"
+                    Click="BtnOpenFile_Click"
+                    FontSize="15">
+                    Choose
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <materialDesign:PackIcon
+                    Width="25"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="left"
+                    VerticalAlignment="Center"
+                    Foreground="#333333"
+                    Kind="Image" />
+
+            </Grid>
+            <Grid
+                Width="320"
+                Height="70"
+                Margin="0,380,0,0"
+                VerticalAlignment="Top">
+
+                <TextBlock
+                    Margin="10,-5,0,0"
+                    FontSize="13"
+                    Foreground="white">
+                    <Span>
+                        <Run Text="Chosen Password" />
+                    </Span>
+                </TextBlock>
+                <Border
+                    Width="320"
+                    Height="38"
+                    Background="#E5E5E5"
+                    CornerRadius="20">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="270"
+                            Opacity=".4"
+                            ShadowDepth="2"
+                            Color="#555555" />
+                    </Border.Effect>
+                    <PasswordBox
+                        x:Name="PasswordBox"
+                        Width="320"
+                        Height="38"
+                        Padding="45,5,20,0"
+                        HorizontalAlignment="Left"
+                        ff:PasswordBoxAssistant.BindPassword="true"
+                        ff:PasswordBoxAssistant.BoundPassword="{Binding Path=EditPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        IsEnabled="True" />
+                </Border>
+                <materialDesign:PackIcon
+                    Width="25"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="left"
+                    VerticalAlignment="Center"
+                    Foreground="#333333"
+                    Kind="PasswordReset" />
+            </Grid>
+
+
+            <Grid Width="320">
+                <Button
+                    x:Name="update"
+                    Width="140"
+                    Height="38"
+                    Margin="0,460,0,20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    BorderThickness="0"
+                    Command="{Binding EditUserInformationCommand}"
+                    Content="Save"
+                    TextElement.FontWeight="Bold">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Style>
+                    </Button.Resources>
+
+                </Button>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

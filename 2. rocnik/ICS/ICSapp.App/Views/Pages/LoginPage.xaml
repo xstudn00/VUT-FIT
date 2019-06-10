@@ -1,0 +1,193 @@
+﻿<Page
+    x:Class="ICSapp.App.Views.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ff="clr-namespace:ICSapp.App.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="LoginPage"
+    MinWidth="400"
+    MinHeight="600"
+    d:DesignHeight="621"
+    d:DesignWidth="761.5"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=LoginViewModel}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="TextElement.Foreground" Value="#E5E5E5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter
+                                Margin="0,0,0,4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="Background" Value="#0a3d62" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Height="auto" TextElement.FontSize="20">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0.4,0.6">
+                <GradientStop Offset="1" Color="#333333" />
+                <GradientStop Offset="1" Color="#60a3bc" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <TextBlock
+            Margin="0,0,0,20"
+            HorizontalAlignment="center"
+            FontFamily="Verdana"
+            FontSize="150"
+            FontWeight="Bold"
+            Foreground="#555555"
+            Text="4F" />
+
+        <TextBlock
+            Margin="0,-100,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="18"
+            FontWeight="DemiBold"
+            Foreground="#b71540"
+            Text="{Binding LoginText}" />
+        <Grid Width="340" Height="70">
+            <TextBlock
+                Margin="20,-5,0,0"
+                FontSize="13"
+                Foreground="white">
+                <Span>
+                    <Run Text="E-mail" />
+                </Span>
+            </TextBlock>
+            <Border
+                Width="320"
+                Height="38"
+                Background="#E5E5E5"
+                CornerRadius="20">
+
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="10"
+                        Direction="270"
+                        Opacity=".4"
+                        ShadowDepth="2"
+                        Color="#555555" />
+                </Border.Effect>
+
+                <TextBox
+                    x:Name="InputEmail"
+                    Width="320"
+                    Height="38"
+                    Padding="45,5,20,0"
+                    HorizontalAlignment="center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Text="{Binding User.EmailAdress}" />
+
+            </Border>
+            <Image
+                Width="25"
+                Height="25"
+                Margin="18,0,0,0"
+                HorizontalAlignment="left"
+                Source="../../Icons/user.png" />
+        </Grid>
+        <Grid
+            Width="340"
+            Height="70"
+            Margin="0,150,0,0">
+            <TextBlock
+                Margin="20,-5,0,0"
+                FontSize="13"
+                Foreground="white"><Span><Run Text="Password" /></Span></TextBlock>
+            <Border
+                Width="320"
+                Height="38"
+                Background="#E5E5E5"
+                CornerRadius="20">
+
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="10"
+                        Direction="270"
+                        Opacity=".4"
+                        ShadowDepth="2"
+                        Color="#555555" />
+                </Border.Effect>
+                <PasswordBox
+                    x:Name="InputPassword"
+                    Width="320"
+                    Height="38"
+                    Padding="45,5,20,0"
+                    HorizontalAlignment="Left"
+                    ff:PasswordBoxAssistant.BindPassword="true"
+                    ff:PasswordBoxAssistant.BoundPassword="{Binding Path=User.Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    IsEnabled="True" />
+
+            </Border>
+
+            <Image
+                Width="25"
+                Height="25"
+                Margin="18,0,0,0"
+                HorizontalAlignment="left"
+                Source="../../Icons/unlocked.png" />
+        </Grid>
+        <Grid
+            Width="340"
+            Height="38"
+            Margin="0,280,0,0">
+            <Button
+                x:Name="register"
+                Width="38"
+                Height="38"
+                Margin="0,0,40,0"
+                VerticalAlignment="center"
+                Click="CreateNewUser"
+                FontWeight="Black">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+                <Path
+                    Width="16"
+                    Height="16"
+                    Margin="0,4,0,0"
+                    Data="M4.1561281,2.2702953 L4.8524521,2.2702954 4.8509674,3.963097 5.8969377,3.9630803 5.8969378,5.0916036 4.8524628,5.1061913 4.8524521,6.7843885 4.1561281,6.7843887 4.1559771,5.0877741 3.1116421,5.0916036 3.1116421,3.9630803 4.1556735,3.9654722 4.1561281,2.2702953 z"
+                    Fill="#E5E5E5"
+                    Stretch="Fill" />
+            </Button>
+
+            <Button
+                x:Name="login"
+                Width="140"
+                Height="38"
+                Margin="180,0,0,0"
+                BorderThickness="0"
+                Command="{Binding LoginUserCommand}"
+                Content="Login"
+                TextElement.FontWeight="Bold">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>
