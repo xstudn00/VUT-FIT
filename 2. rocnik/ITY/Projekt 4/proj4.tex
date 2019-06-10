@@ -1,0 +1,37 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[left=2cm,text={17cm, 24cm},top=3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{times}
+\newcommand{\bibtex}{\textsc{Bib}\negthinspace\TeX}
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\Huge
+\textsc{Vysoké učení technické v~Brně}\\ \huge \textsc{Fakulta informačních technologií\\}
+\vspace{\stretch{0.382}}
+\LARGE
+Typografie a publikování -- 4. projekt \\
+\Huge
+Citace
+\vspace{\stretch{0.618}}
+\end{center} 
+{\Large 10. dubna 2019\hfill Ondřej Studnička}
+\end{titlepage}
+
+\section{Typografie}
+{\em \uv{Typografie je disciplína zabývající se písmem, především jeho správným výběrem, použitím a~sazbou.}} V~tomtu duchu se k~typografii přistupuje ve firmě Adaptic \cite{elektronicky1}. Na první pohled se zdá být tato definice jasná a~snadno uchopitelná. V~pozadí se však skrývá věda, se kterou lze strávit mnoho času, ať už čtením z knih \cite{kniha1}, procházením nejrůznějších článků či čerpáním z historie \cite{clanek1}. V~dnešním světě je však bohužel běžné, že dokumenty jsou sázeny nekvalitně.
+
+\section{Prostředí pro tvorbu textů}
+V~dnešní době nejvíce lidí využívá k tvrobě textových dokumentů nástroje typu MS Word \cite{kniha2}, LibreOffice a~jim podobné. Tyto nástroje jsou vhodné chceme-li napsat dokument, ve kterém se vůbec nevyskytují (nebo se vyskytují zřídka) rovnice, symboly, speciální znaky atd. Pokud však chceme vysázet text, ve kterém se objevují tyto znaky častěji, pak je vhodné použít \TeX\space  či jeho nástavbu \LaTeX. S~těmito nástroji lze dokument sázet kvalitně nehledě na jeho obsah. Důkazem je například možnost kreslení obrázků pomocí \LaTeX\space \cite{serial}. Další plusové body získávají \TeX\space a~\LaTeX\space na poli efektivity \cite{elektronicky2}. Naučení se základům práce s~\LaTeX\space není nic složitého. Mimo textové dokumenty lze s~\LaTeX\space vytvářet i~prezentace \cite{elektronicky3}. Rovněž uživatel může jednoduše generovat citace. 
+
+\section{Jak jsou na tom studenti?}
+Každý student vysoké školy by měl mít aspoň základní znalosti z~oblasti typografie. Článek o~této problematice sepsal Sylvia Pantaleo \cite{clanek2}. Na Fakultě informačních technologií brněnského VUT mají studenti možnost si zapsat předmět Typografie a~publikování. Předmět je zde vyučován od roku 2006. Cílem je naučit studenty tvořit dokumenty dle současných norem. Po absolvování tohoto kurzu se mnozí studenti rozhodnou pomocí nástroje \LaTeX\space vytvořit svou závěrečnou práci \cite{bakalar1}, ti odvážnější si pak můžou zvolit typografii jako hlavní téma své práce\cite{bakalar2}.
+
+
+\newpage
+\renewcommand{\refname}{Literatura}
+\bibliography{citace}
+\bibliographystyle{czplain}
+\end{document}
